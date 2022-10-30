@@ -1,0 +1,21 @@
+{
+    "name": "frootbox/paypal",
+    "description": "Frootbox Paypal API SDK",
+    "support": {
+        "docs": "",
+        "email": "jan.habbo.bruening@gmail.com"
+    },
+    "authors": [
+        {
+            "name": "Jan Habbo Brüning",
+            "email": "jan.habbo.bruening@gmail.com"
+        }
+    ],
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+    	"psr-4": { "Frootbox\\Paypal\\": "src/" }
+    },
+    "require": {
+        "php": ">=7.0.0"
+    }
+}
