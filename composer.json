@@ -16,6 +16,6 @@
     	"psr-4": { "Frootbox\\Paypal\\": "src/" }
     },
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=8.0.0"
     }
 }
