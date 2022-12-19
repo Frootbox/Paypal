@@ -20,7 +20,7 @@ class Client
     /**
      *
      */
-    public function get(string $path, array $payload = null): array
+    public function get(string $path, array $pathData = null, array $payload = null): array
     {
         // Obtain get token
         $accessToken = $this->getAccessToken();
@@ -28,8 +28,8 @@ class Client
         // Build url
         $url = 'https://api.paypal.com' . $path;
 
-        if (!empty($payload)) {
-            $url .= '?' . http_build_query($payload);
+        if (!empty($pathData)) {
+            $url .= '?' . http_build_query($pathData);
         }
 
         $curl = curl_init();
@@ -47,10 +47,26 @@ class Client
             ),
         ));
 
-        $result = curl_exec($curl);
-        $array = json_decode($result, true);
+        if (!empty($payload)) {
+            $payload = json_encode($payload);
 
-        d($array);
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $payload);
+        }
+
+        $result = curl_exec($curl);
+
+        if ($result === false) {
+
+            d("ERROR");
+
+            d(curl_error($curl));
+
+        }
+
+        $response = json_decode($result, true);
+
+        return $response;
     }
 
     /**
@@ -106,6 +122,8 @@ class Client
      */
     public function getSubscription(string $subscriptionId): \Frootbox\Paypal\Subscription
     {
-        return new \Frootbox\Paypal\Subscription(client: $this, subscriptionId: $subscriptionId);
+        $result = $this->get('/v1/billing/subscriptions/' . $subscriptionId);
+
+        return \Frootbox\Paypal\Subscription::fromData(client: $this, subscriptionId: $subscriptionId, data: $result);
     }
 }
