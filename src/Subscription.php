@@ -11,6 +11,12 @@ class Subscription
     protected $status;
     protected $planId;
 
+    protected \DateTime $dateCreated;
+    protected \DateTime $dateNextBilling;
+
+    protected array $subscriber;
+    protected array $billingInfo;
+
     protected $client;
 
     /**
@@ -44,11 +50,40 @@ class Subscription
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getDateCreated(): \DateTime
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateNextBilling(): \DateTime
+    {
+        return $this->dateNextBilling;
+    }
+
+    /**
+     *
+     */
+    public function getPlanId(): string
+    {
+        return $this->planId;
+    }
+
+    /**
      *
      */
     public function getStatus(): string
     {
         return $this->status;
+    }
+
+    public function getSubscriptionId(): string
+    {
+        return $this->subscriptionId;
     }
 
     /**
@@ -71,8 +106,13 @@ class Subscription
     {
         $subscription = new self($client, $subscriptionId);
 
+        $subscription->dateCreated = new \DateTime($data['create_time']);
+        $subscription->dateNextBilling = new \DateTime($data['billing_info']['next_billing_time']);
+
         $subscription->status = $data['status'];
         $subscription->planId = $data['plan_id'];
+        $subscription->subscriber = $data['subscriber'];
+        $subscription->billingInfo = $data['billing_info'];
 
         return $subscription;
     }
