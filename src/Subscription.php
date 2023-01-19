@@ -50,6 +50,14 @@ class Subscription
     }
 
     /**
+     *
+     */
+    public function getBillingInfo(): array
+    {
+        return $this->billingInfo;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getDateCreated(): \DateTime
@@ -81,6 +89,14 @@ class Subscription
         return $this->status;
     }
 
+    public function getSubscriber()
+    {
+        return $this->subscriber;
+    }
+
+    /**
+     * @return string
+     */
     public function getSubscriptionId(): string
     {
         return $this->subscriptionId;
