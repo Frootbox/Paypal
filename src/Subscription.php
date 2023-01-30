@@ -34,19 +34,15 @@ class Subscription
     /**
      *
      */
-    public function cancel(): array
+    public function cancel(string $reason, $parameters = []): void
     {
-        try {
-
-            $result = $this->client->get('/v1/billing/subscriptions/' . $this->subscriptionId . '/cancel', null, [
-                'reason' => 'Kündigung'
-            ]);
-
-            d($result);
+        if ($this->status == 'CANCELLED') {
+            return;
         }
-        catch (\Exception $e) {
-            d($e);
-        }
+
+        $result = $this->client->get('/v1/billing/subscriptions/' . $this->subscriptionId . '/cancel', null, [
+            'reason' => $reason,
+        ]);
     }
 
     /**
@@ -123,7 +119,10 @@ class Subscription
         $subscription = new self($client, $subscriptionId);
 
         $subscription->dateCreated = new \DateTime($data['create_time']);
-        $subscription->dateNextBilling = new \DateTime($data['billing_info']['next_billing_time']);
+
+        if (!empty($data['billing_info']['next_billing_time'])) {
+            $subscription->dateNextBilling = new \DateTime($data['billing_info']['next_billing_time']);
+        }
 
         $subscription->status = $data['status'];
         $subscription->planId = $data['plan_id'];
