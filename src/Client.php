@@ -10,7 +10,8 @@ class Client
     private $accessToken = null;
 
     /**
-     *
+     * @param string|null $clientId
+     * @param string|null $secret
      */
     public function __construct(
         protected ?string $clientId = null,
@@ -18,7 +19,10 @@ class Client
     ) {}
 
     /**
-     *
+     * @param string $path
+     * @param array|null $pathData
+     * @param array|null $payload
+     * @return array
      */
     public function get(string $path, array $pathData = null, array $payload = null): array
     {
@@ -64,13 +68,13 @@ class Client
 
         }
 
-        $response = json_decode($result, true);
+        $response = json_decode($result, true) ?? [];
 
         return $response;
     }
 
     /**
-     *
+     * @return Token
      */
     public function getAccessToken(): \Frootbox\Paypal\Token
     {
@@ -118,7 +122,8 @@ class Client
     }
 
     /**
-     *
+     * @param string $subscriptionId
+     * @return Subscription
      */
     public function getSubscription(string $subscriptionId): \Frootbox\Paypal\Subscription
     {
