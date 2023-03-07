@@ -122,6 +122,18 @@ class Client
     }
 
     /**
+     * @param string $planId
+     * @return Plan
+     */
+    public function getPlan(string $planId): \Frootbox\Paypal\Plan
+    {
+        // Fetch plan data from rest api
+        $result = $this->get('/v1/billing/plans/' . $planId);
+
+        return \Frootbox\Paypal\Plan::fromData(client: $this, planId: $planId, data: $result);
+    }
+
+    /**
      * @param string $subscriptionId
      * @return Subscription
      */
